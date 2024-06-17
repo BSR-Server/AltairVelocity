@@ -46,9 +46,6 @@ public class DataManager {
     }
 
     private void updateQuotations() {
-        // clear
-        quotations.clear();
-
         // get quotations
         JSONArray quotationsJSONArray = null;
         try (Response response = client.newCall(createGetRequest("/v1/hitokoto/quotations")).execute()) {
@@ -62,8 +59,9 @@ public class DataManager {
             logger.error("Failed to get quotations", exception);
         }
 
-        // save quotations
+        // update quotations
         if (quotationsJSONArray != null) {
+            quotations.clear();
             for (JSONObject quotation : quotationsJSONArray.toArray(JSONObject.class)) {
                 quotations.add(quotation.getString("sourceName") + "：" + quotation.getString("content"));
             }
@@ -71,9 +69,6 @@ public class DataManager {
     }
 
     private void updateServers() {
-        // clear
-        servers.clear();
-
         // get servers
         JSONArray serversJSONArray = null;
         try (Response response = client.newCall(createGetRequest("/v1/minecraft/servers")).execute()) {
@@ -87,8 +82,9 @@ public class DataManager {
             logger.error("Failed to get servers", exception);
         }
 
-        // save servers
+        // update servers
         if (serversJSONArray != null) {
+            servers.clear();
             for (JSONObject server : serversJSONArray.toArray(JSONObject.class)) {
                 servers.put(
                         server.getString("serverName"),
