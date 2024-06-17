@@ -45,18 +45,20 @@ public class DataManager {
                 );
     }
 
+    private Cache getCache() {
+        return Cache
+                .builder()
+                .accountHashMap(accountHashMap)
+                .quotations(quotations)
+                .minecraftProfileHashMap(minecraftProfileHashMap)
+                .serverInfoHashMap(serverInfoHashMap)
+                .serverGroups(serverGroups)
+                .build();
+    }
+
     private void saveToFile() {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(cacheFile))) {
-            objectOutputStream.writeObject(
-                    Cache
-                            .builder()
-                            .accountHashMap(accountHashMap)
-                            .quotations(quotations)
-                            .minecraftProfileHashMap(minecraftProfileHashMap)
-                            .serverInfoHashMap(serverInfoHashMap)
-                            .serverGroups(serverGroups)
-                            .build()
-            );
+            objectOutputStream.writeObject(getCache());
         } catch (IOException e) {
             logger.error("Failed to save cache to file.", e);
         }
@@ -276,6 +278,10 @@ public class DataManager {
 
         // fill objects to serverGroups
         fillServerGroups();
+    }
+
+    public String getDebugInfo() {
+        return "Cache: " + getCache().toString();
     }
 
     public Optional<ServerInfo> getServerInfo(String serverName) {

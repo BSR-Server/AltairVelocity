@@ -28,7 +28,8 @@ public class DataCommandFactory {
                 .executes(context -> {
                     context.getSource().sendMessage(
                             Component.text("----- Data Command Help -----\n", NamedTextColor.GREEN)
-                                    .append(Component.text("/altair data update - Update data", NamedTextColor.WHITE))
+                                    .append(Component.text("/altair data update - Update data\n", NamedTextColor.WHITE))
+                                    .append(Component.text("/altair data debug - Show debug info\n", NamedTextColor.WHITE))
                     );
                     return Command.SINGLE_SUCCESS;
                 })
@@ -37,6 +38,14 @@ public class DataCommandFactory {
                                 .executes(context -> {
                                     altairVelocity.getDataManager().updateData();
                                     context.getSource().sendMessage(Component.text("Data updated", NamedTextColor.GREEN));
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                                .build()
+                )
+                .then(
+                        BrigadierCommand.literalArgumentBuilder("debug")
+                                .executes(context -> {
+                                    context.getSource().sendMessage(Component.text(altairVelocity.getDataManager().getDebugInfo()));
                                     return Command.SINGLE_SUCCESS;
                                 })
                                 .build()
