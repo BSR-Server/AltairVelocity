@@ -7,12 +7,14 @@ import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import org.bsrserver.altair.velocity.AltairVelocity;
 import org.bsrserver.altair.velocity.credential.CredentialCommandFactory;
+import org.bsrserver.altair.velocity.data.DataCommandFactory;
 import org.bsrserver.altair.velocity.hitokoto.HitokotoCommandFactory;
 
 public class CommandFactory {
     private static Component getHelpMessage() {
         return Component.text("----- Command Help -----")
                 .append(Component.text("\n"))
+                .append(Component.text("/altair data - Data commands"))
                 .append(Component.text("/altair credential - Default altair credential"))
                 .append(Component.text("/altair hitokoto - Hitokoto commands"));
     }
@@ -23,6 +25,7 @@ public class CommandFactory {
                     context.getSource().sendMessage(getHelpMessage());
                     return Command.SINGLE_SUCCESS;
                 })
+                .then(DataCommandFactory.createDataCommand(altairVelocity))
                 .then(CredentialCommandFactory.createCredentialCommand(altairVelocity))
                 .then(HitokotoCommandFactory.createHitokotoCommand(altairVelocity))
                 .build();
