@@ -14,7 +14,7 @@ import org.bsrserver.altair.velocity.hitokoto.HitokotoCommandFactory;
 public class CommandFactory {
     private static Component getHelpMessage() {
         return Component.text("----- Command Help -----", NamedTextColor.GREEN)
-                .append(Component.text("\n"))
+                .append(Component.text("\n", NamedTextColor.WHITE))
                 .append(Component.text("/altair data - Data commands\n"))
                 .append(Component.text("/altair credential - Default altair credential\n"))
                 .append(Component.text("/altair hitokoto - Hitokoto commands\n"))

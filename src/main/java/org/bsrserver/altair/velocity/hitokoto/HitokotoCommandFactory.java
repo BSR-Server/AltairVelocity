@@ -23,7 +23,7 @@ public class HitokotoCommandFactory {
                 .executes(context -> {
                     context.getSource().sendMessage(
                             Component.text("----- Hitokoto Command Help -----", NamedTextColor.GREEN)
-                                    .append(Component.text("\n"))
+                                    .append(Component.text("\n", NamedTextColor.WHITE))
                                     .append(Component.text("/altair hitokoto random [count] - Get random quotations"))
                     );
                     return Command.SINGLE_SUCCESS;

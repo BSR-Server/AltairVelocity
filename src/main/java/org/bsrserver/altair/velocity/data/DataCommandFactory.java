@@ -28,7 +28,7 @@ public class DataCommandFactory {
                 .executes(context -> {
                     context.getSource().sendMessage(
                             Component.text("----- Data Command Help -----", NamedTextColor.GREEN)
-                                    .append(Component.text("\n"))
+                                    .append(Component.text("\n", NamedTextColor.WHITE))
                                     .append(Component.text("/altair data update - Update data"))
                     );
                     return Command.SINGLE_SUCCESS;
