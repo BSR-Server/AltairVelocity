@@ -13,14 +13,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager {
     private final AltairVelocity altairVelocity;
     private final Logger logger;
     private final OkHttpClient client = new OkHttpClient();
+    private final HashMap<Integer, Account> accountHashMap = new HashMap<>();
     private final ArrayList<String> quotations = new ArrayList<>();
-    private final HashMap<String, ServerInfo> servers = new HashMap<>();
+    private final HashMap<UUID, MinecraftProfile> minecraftProfileHashMap = new HashMap<>();
+    private final HashMap<String, ServerInfo> serverInfoHashMap = new HashMap<>();
+    private final HashMap<Integer, ServerGroup> serverGroupHashMap = new HashMap<>();
 
     public DataManager(AltairVelocity altairVelocity) {
         this.altairVelocity = altairVelocity;
@@ -30,8 +34,11 @@ public class DataManager {
 
     private void scheduledTask() {
         try {
+            updateAccounts();
             updateQuotations();
+            updateMinecraftProfiles();
             updateServers();
+            updateServerGroups();
         } catch (Exception e) {
             altairVelocity.getLogger().error("Failed to get update some data", e);
         }
@@ -43,6 +50,30 @@ public class DataManager {
                 .url(altairVelocity.getConfig().getBackendBaseUrl() + path)
                 .header("Authorization", authorization)
                 .build();
+    }
+
+    private void updateAccounts() {
+        // get accounts
+        JSONArray accountsJSONArray = null;
+        try (Response response = client.newCall(createGetRequest("/v1/auth/accounts")).execute()) {
+            if (response.body() != null) {
+                accountsJSONArray = JSONObject
+                        .parseObject(response.body().string())
+                        .getJSONObject("data")
+                        .getJSONArray("accounts");
+            }
+        } catch (IOException exception) {
+            logger.error("Failed to get accounts", exception);
+        }
+
+        // update accounts
+        if (accountsJSONArray != null) {
+            accountHashMap.clear();
+            for (JSONObject accountJSONObject : accountsJSONArray.toArray(JSONObject.class)) {
+                Account account = accountJSONObject.to(Account.class);
+                accountHashMap.put(account.getAccountId(), account);
+            }
+        }
     }
 
     private void updateQuotations() {
@@ -68,6 +99,30 @@ public class DataManager {
         }
     }
 
+    private void updateMinecraftProfiles() {
+        // get minecraftProfiles
+        JSONArray minecraftProfilesJSONArray = null;
+        try (Response response = client.newCall(createGetRequest("/v1/minecraft/minecraftProfiles?getAll=true")).execute()) {
+            if (response.body() != null) {
+                minecraftProfilesJSONArray = JSONObject
+                        .parseObject(response.body().string())
+                        .getJSONObject("data")
+                        .getJSONArray("minecraftProfiles");
+            }
+        } catch (IOException exception) {
+            logger.error("Failed to get minecraftProfiles", exception);
+        }
+
+        // update minecraftProfiles
+        if (minecraftProfilesJSONArray != null) {
+            minecraftProfileHashMap.clear();
+            for (JSONObject minecraftProfileJSONObject : minecraftProfilesJSONArray.toArray(JSONObject.class)) {
+                MinecraftProfile minecraftProfile = minecraftProfileJSONObject.to(MinecraftProfile.class);
+                minecraftProfileHashMap.put(minecraftProfile.getUuid(), minecraftProfile);
+            }
+        }
+    }
+
     private void updateServers() {
         // get servers
         JSONArray serversJSONArray = null;
@@ -84,9 +139,9 @@ public class DataManager {
 
         // update servers
         if (serversJSONArray != null) {
-            servers.clear();
+            serverInfoHashMap.clear();
             for (JSONObject server : serversJSONArray.toArray(JSONObject.class)) {
-                servers.put(
+                serverInfoHashMap.put(
                         server.getString("serverName"),
                         new ServerInfo(
                                 server.getString("serverName"),
@@ -99,8 +154,32 @@ public class DataManager {
         }
     }
 
+    private void updateServerGroups() {
+        // get servers
+        JSONArray serverGroupsJSONArray = null;
+        try (Response response = client.newCall(createGetRequest("/v1/minecraft/serverGroups?withServers=true&withAccounts=true")).execute()) {
+            if (response.body() != null) {
+                serverGroupsJSONArray = JSONObject
+                        .parseObject(response.body().string())
+                        .getJSONObject("data")
+                        .getJSONArray("serverGroups");
+            }
+        } catch (IOException exception) {
+            logger.error("Failed to get serverGroups", exception);
+        }
+
+        // update servers
+        if (serverGroupsJSONArray != null) {
+            serverGroupHashMap.clear();
+            for (JSONObject serverGroupJSONObject : serverGroupsJSONArray.toArray(JSONObject.class)) {
+                ServerGroup serverGroup = serverGroupJSONObject.to(ServerGroup.class);
+                serverGroupHashMap.put(serverGroup.getGroupId(), serverGroup);
+            }
+        }
+    }
+
     public Optional<ServerInfo> getServerInfo(String serverName) {
-        return Optional.ofNullable(servers.get(serverName));
+        return Optional.ofNullable(serverInfoHashMap.get(serverName));
     }
 
     public String getRandomQuotation() {
