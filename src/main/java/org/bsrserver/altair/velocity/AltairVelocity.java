@@ -10,6 +10,7 @@ import lombok.Getter;
 import org.bsrserver.altair.velocity.command.CommandFactory;
 import org.bsrserver.altair.velocity.config.Config;
 import org.bsrserver.altair.velocity.credential.CredentialDataManager;
+import org.bsrserver.altair.velocity.data.DataManager;
 import org.bsrserver.altair.velocity.event.ServerConnectedEventListener;
 import org.slf4j.Logger;
 
@@ -35,6 +36,7 @@ public class AltairVelocity {
     private final Logger logger;
     private final Path dataDirectory;
     private final Config config;
+    private final DataManager dataManager;
     private final CredentialDataManager credentialDataManager;
 
     @Inject
@@ -52,6 +54,7 @@ public class AltairVelocity {
 
         // init members
         this.config = new Config(dataDirectory);
+        this.dataManager = new DataManager(this);
         this.credentialDataManager = new CredentialDataManager(this);
     }
 
