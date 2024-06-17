@@ -22,9 +22,8 @@ public class HitokotoCommandFactory {
         return BrigadierCommand.literalArgumentBuilder("hitokoto")
                 .executes(context -> {
                     context.getSource().sendMessage(
-                            Component.text("----- Hitokoto Command Help -----", NamedTextColor.GREEN)
-                                    .append(Component.text("\n", NamedTextColor.WHITE))
-                                    .append(Component.text("/altair hitokoto random [count] - Get random quotations"))
+                            Component.text("----- Hitokoto Command Help -----\n", NamedTextColor.GREEN)
+                                    .append(Component.text("/altair hitokoto random [count] - Get random quotations", NamedTextColor.WHITE))
                     );
                     return Command.SINGLE_SUCCESS;
                 })
