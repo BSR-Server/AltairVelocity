@@ -88,26 +88,7 @@ public class DataManager {
     }
 
     private void scheduledTask() {
-        // update data
-        try {
-            CompletableFuture
-                    .allOf(
-                            CompletableFuture.runAsync(this::updateAccounts),
-                            CompletableFuture.runAsync(this::updateQuotations),
-                            CompletableFuture.runAsync(this::updateMinecraftProfiles),
-                            CompletableFuture.runAsync(this::updateServers),
-                            CompletableFuture.runAsync(this::updateServerGroups)
-                    )
-                    .get();
-        } catch (Exception e) {
-            altairVelocity.getLogger().error("Failed to get update some data", e);
-        }
-
-        // save to file
-        saveToFile();
-
-        // fill objects to serverGroups
-        fillServerGroups();
+        this.updateData();
     }
 
     private Request createGetRequest(String path) {
@@ -272,6 +253,29 @@ public class DataManager {
                             .toList()
             );
         }
+    }
+
+    synchronized public void updateData() {
+        // update data
+        try {
+            CompletableFuture
+                    .allOf(
+                            CompletableFuture.runAsync(this::updateAccounts),
+                            CompletableFuture.runAsync(this::updateQuotations),
+                            CompletableFuture.runAsync(this::updateMinecraftProfiles),
+                            CompletableFuture.runAsync(this::updateServers),
+                            CompletableFuture.runAsync(this::updateServerGroups)
+                    )
+                    .get();
+        } catch (Exception e) {
+            altairVelocity.getLogger().error("Failed to get update some data", e);
+        }
+
+        // save to file
+        saveToFile();
+
+        // fill objects to serverGroups
+        fillServerGroups();
     }
 
     public Optional<ServerInfo> getServerInfo(String serverName) {
