@@ -32,8 +32,8 @@ public class EventListener {
         this.disconnectEventHandlers = new ArrayList<>();
 
         // login event handlers
-        loginEventHandlers.add(new WhitelistEventHandler());
         loginEventHandlers.add(new AccountLoginEventHandler());
+        loginEventHandlers.add(new WhitelistEventHandler());
 
         // server pre connect event handlers
         serverPreConnectEventHandlers.add(new WhitelistEventHandler());

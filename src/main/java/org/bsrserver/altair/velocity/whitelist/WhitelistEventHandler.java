@@ -52,7 +52,7 @@ public class WhitelistEventHandler implements ILoginEventHandler, IServerPreConn
         // check account is already online
         if (
                 !account.hasRole(Role.ROLE_ADMIN)
-                        && altairVelocity.getAccountOnlinePlayersManager().getOnlinePlayersCount(account) >= MAX_ONLINE_PLAYERS
+                        && altairVelocity.getAccountOnlinePlayersManager().getOnlinePlayersCount(account) - 1 >= MAX_ONLINE_PLAYERS
         ) {
             for (Player onlinePlayer : altairVelocity.getProxyServer().getAllPlayers()) {
                 // ignore player that trying to connect
