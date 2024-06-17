@@ -14,9 +14,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager {
+    private final OkHttpClient client = new OkHttpClient();
     private final AltairVelocity altairVelocity;
     private final Logger logger;
-    private final OkHttpClient client = new OkHttpClient();
+
     private final HashMap<Integer, Account> accountHashMap = new HashMap<>();
     private final List<String> quotations = new ArrayList<>();
     private final HashMap<UUID, MinecraftProfile> minecraftProfileHashMap = new HashMap<>();
