@@ -6,6 +6,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bsrserver.altair.velocity.AltairVelocity;
 import org.bsrserver.altair.velocity.data.DataManager;
 
@@ -20,7 +21,11 @@ public class HitokotoCommandFactory {
     public static LiteralCommandNode<CommandSource> createHitokotoCommand(AltairVelocity altairVelocity) {
         return BrigadierCommand.literalArgumentBuilder("hitokoto")
                 .executes(context -> {
-                    context.getSource().sendPlainMessage("Usage: /altair hitokoto random [count]");
+                    context.getSource().sendMessage(
+                            Component.text("----- Hitokoto Command Help -----", NamedTextColor.GREEN)
+                                    .append(Component.text("\n"))
+                                    .append(Component.text("/altair hitokoto random [count] - Get random quotations"))
+                    );
                     return Command.SINGLE_SUCCESS;
                 })
                 .then(
