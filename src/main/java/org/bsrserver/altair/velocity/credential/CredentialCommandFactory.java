@@ -81,7 +81,7 @@ public class CredentialCommandFactory {
                 .executes(context -> {
                     context.getSource().sendMessage(
                             Component.text("----- Credential Command Help -----\n", NamedTextColor.GREEN)
-                                    .append(Component.text("/altair credential get - Get default altair credential", NamedTextColor.WHITE))
+                                    .append(Component.text("/altair credential get - Get default altair credential\n", NamedTextColor.WHITE))
                                     .append(Component.text("/altair credential avoidWelcomeMessage - Avoid welcome message", NamedTextColor.WHITE))
                     );
                     return Command.SINGLE_SUCCESS;
