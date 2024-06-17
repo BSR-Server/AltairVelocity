@@ -4,6 +4,7 @@ import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import org.bsrserver.altair.velocity.AltairVelocity;
+import org.bsrserver.altair.velocity.credential.CredentialServerConnectedHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ServerConnectedEventListener {
         this.serverConnectedHandlers = new ArrayList<>();
 
         // event handlers
+        serverConnectedHandlers.add(new CredentialServerConnectedHandler());
     }
 
     @Subscribe(order = PostOrder.LATE)

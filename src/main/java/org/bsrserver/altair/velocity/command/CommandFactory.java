@@ -6,6 +6,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import org.bsrserver.altair.velocity.AltairVelocity;
+import org.bsrserver.altair.velocity.credential.CredentialCommandFactory;
 
 public class CommandFactory {
     private static Component getHelpMessage() {
@@ -20,6 +21,7 @@ public class CommandFactory {
                     context.getSource().sendMessage(getHelpMessage());
                     return Command.SINGLE_SUCCESS;
                 })
+                .then(CredentialCommandFactory.createCredentialCommand(altairVelocity))
                 .build();
         return new BrigadierCommand(rootCommandNode);
     }

@@ -9,6 +9,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import org.bsrserver.altair.velocity.command.CommandFactory;
 import org.bsrserver.altair.velocity.config.Config;
+import org.bsrserver.altair.velocity.credential.CredentialDataManager;
 import org.bsrserver.altair.velocity.event.ServerConnectedEventListener;
 import org.slf4j.Logger;
 
@@ -34,6 +35,7 @@ public class AltairVelocity {
     private final Logger logger;
     private final Path dataDirectory;
     private final Config config;
+    private final CredentialDataManager credentialDataManager;
 
     @Inject
     public AltairVelocity(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
@@ -50,6 +52,7 @@ public class AltairVelocity {
 
         // init members
         this.config = new Config(dataDirectory);
+        this.credentialDataManager = new CredentialDataManager(this);
     }
 
     @Subscribe
