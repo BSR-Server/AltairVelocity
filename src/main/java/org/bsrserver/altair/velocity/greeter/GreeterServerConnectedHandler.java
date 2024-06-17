@@ -25,7 +25,7 @@ public class GreeterServerConnectedHandler implements IServerConnectedHandler {
         return altairVelocity
                 .getDataManager()
                 .getServerInfo(serverName)
-                .orElseGet(() -> new ServerInfo(serverName, serverName, LocalDate.now(), Integer.MAX_VALUE));
+                .orElseGet(() -> new ServerInfo(0, serverName, serverName, LocalDate.now(), Integer.MAX_VALUE));
     }
 
     private static Component getServerNameComponent(ServerInfo currentServerInfo, ServerInfo serverInfo) {

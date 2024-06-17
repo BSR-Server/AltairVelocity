@@ -140,14 +140,15 @@ public class DataManager {
         // update servers
         if (serversJSONArray != null) {
             serverInfoHashMap.clear();
-            for (JSONObject server : serversJSONArray.toArray(JSONObject.class)) {
+            for (JSONObject serverJSONObject : serversJSONArray.toArray(JSONObject.class)) {
                 serverInfoHashMap.put(
-                        server.getString("serverName"),
+                        serverJSONObject.getString("serverName"),
                         new ServerInfo(
-                                server.getString("serverName"),
-                                server.getString("givenName"),
-                                LocalDate.parse(server.getString("foundationDate")),
-                                server.getInteger("priority")
+                                serverJSONObject.getInteger("serverId"),
+                                serverJSONObject.getString("serverName"),
+                                serverJSONObject.getString("givenName"),
+                                LocalDate.parse(serverJSONObject.getString("foundationDate")),
+                                serverJSONObject.getInteger("priority")
                         )
                 );
             }
