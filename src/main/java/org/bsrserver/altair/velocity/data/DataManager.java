@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager {
@@ -82,11 +83,15 @@ public class DataManager {
     private void scheduledTask() {
         // update data
         try {
-            updateAccounts();
-            updateQuotations();
-            updateMinecraftProfiles();
-            updateServers();
-            updateServerGroups();
+            CompletableFuture
+                    .allOf(
+                            CompletableFuture.runAsync(this::updateAccounts),
+                            CompletableFuture.runAsync(this::updateQuotations),
+                            CompletableFuture.runAsync(this::updateMinecraftProfiles),
+                            CompletableFuture.runAsync(this::updateServers),
+                            CompletableFuture.runAsync(this::updateServerGroups)
+                    )
+                    .get();
         } catch (Exception e) {
             altairVelocity.getLogger().error("Failed to get update some data", e);
         }
