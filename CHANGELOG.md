@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/BSR-Server/AltairVelocity/compare/v1.1.0...v1.2.0) (2024-06-17)
+
+
+### Features
+
+* **data:** ✨ debug message ([bdc3032](https://github.com/BSR-Server/AltairVelocity/commit/bdc3032631f864ef9f680b9aea9b038aba7bb51d))
+
 ## [1.1.0](https://github.com/BSR-Server/AltairVelocity/compare/v1.0.0...v1.1.0) (2024-06-17)
 
 
