@@ -37,6 +37,7 @@ public class DataCommandFactory {
                         BrigadierCommand.literalArgumentBuilder("update")
                                 .executes(context -> {
                                     altairVelocity.getDataManager().updateData();
+                                    context.getSource().sendMessage(Component.text("Data updated", NamedTextColor.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                                 .build()
