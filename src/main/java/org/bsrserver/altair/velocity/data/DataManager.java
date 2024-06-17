@@ -35,7 +35,14 @@ public class DataManager {
         readFromFile();
 
         // scheduled task
-        altairVelocity.getScheduledExecutorService().scheduleAtFixedRate(this::scheduledTask, 0, 30, TimeUnit.SECONDS);
+        altairVelocity
+                .getScheduledExecutorService()
+                .scheduleWithFixedDelay(
+                        this::scheduledTask,
+                        0,
+                        60,
+                        TimeUnit.SECONDS
+                );
     }
 
     private void saveToFile() {
