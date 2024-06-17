@@ -22,7 +22,6 @@ public class WhitelistEventHandler implements ILoginEventHandler, IServerPreConn
 
     private void denyOrDisconnectPlayerAtLoginEvent(LoginEvent event, Component message) {
         event.setResult(ResultedEvent.ComponentResult.denied(message));
-        event.getPlayer().disconnect(message);
     }
 
     private void denyOrDisconnectPlayerAtServerPreConnectEvent(ServerPreConnectEvent event, Component message) {
