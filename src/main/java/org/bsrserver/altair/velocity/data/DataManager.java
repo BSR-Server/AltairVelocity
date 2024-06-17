@@ -36,6 +36,8 @@ public class DataManager {
             updateMinecraftProfiles();
             updateServers();
             updateServerGroups();
+
+            fillServerGroups();
         } catch (Exception e) {
             altairVelocity.getLogger().error("Failed to get update some data", e);
         }
@@ -176,6 +178,33 @@ public class DataManager {
         }
     }
 
+    private void fillServerGroups() {
+        for (ServerGroup serverGroup : serverGroups) {
+            // parents
+            serverGroup.setParentObjects(new ArrayList<>(
+                    serverGroups
+                            .stream()
+                            .filter(parent -> serverGroup
+                                    .getParents()
+                                    .contains(parent.getGroupId())
+                            )
+                            .toList()
+            ));
+
+            // servers
+            serverGroup.setServerObjects(new ArrayList<>(
+                    serverInfoHashMap
+                            .values()
+                            .stream()
+                            .filter(serverInfo -> serverGroup
+                                    .getServers()
+                                    .contains(serverInfo.getServerId())
+                            )
+                            .toList()
+            ));
+        }
+    }
+
     public Optional<ServerInfo> getServerInfo(String serverName) {
         return Optional.ofNullable(serverInfoHashMap.get(serverName));
     }
@@ -186,5 +215,37 @@ public class DataManager {
         } else {
             return "";
         }
+    }
+
+    public boolean canJoinServer(UUID uuid, String serverName) {
+        // get minecraftProfile
+        MinecraftProfile minecraftProfile = minecraftProfileHashMap.get(uuid);
+        if (minecraftProfile == null) {
+            return false;
+        }
+
+        // get account
+        Account account = accountHashMap.get(minecraftProfile.getAccountId());
+        if (account == null) {
+            return false;
+        }
+
+        // check account status
+        if (account.getIsBanned() || !account.getIsActive()) {
+            return false;
+        }
+
+        // check server group
+        for (ServerGroup serverGroup : serverGroups) {
+            if (
+                    serverGroup.getAccounts().contains(account.getAccountId())
+                            && serverGroup.getAllServers().stream().anyMatch(serverInfo -> serverInfo.getServerName().equals(serverName))
+            ) {
+                return true;
+            }
+        }
+
+        // default
+        return false;
     }
 }
