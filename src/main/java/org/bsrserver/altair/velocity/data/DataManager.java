@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager {
@@ -21,10 +18,10 @@ public class DataManager {
     private final Logger logger;
     private final OkHttpClient client = new OkHttpClient();
     private final HashMap<Integer, Account> accountHashMap = new HashMap<>();
-    private final ArrayList<String> quotations = new ArrayList<>();
+    private final List<String> quotations = new ArrayList<>();
     private final HashMap<UUID, MinecraftProfile> minecraftProfileHashMap = new HashMap<>();
     private final HashMap<String, ServerInfo> serverInfoHashMap = new HashMap<>();
-    private final HashMap<Integer, ServerGroup> serverGroupHashMap = new HashMap<>();
+    private final List<ServerGroup> serverGroups = new ArrayList<>();
 
     public DataManager(AltairVelocity altairVelocity) {
         this.altairVelocity = altairVelocity;
@@ -171,10 +168,10 @@ public class DataManager {
 
         // update servers
         if (serverGroupsJSONArray != null) {
-            serverGroupHashMap.clear();
+            serverGroups.clear();
             for (JSONObject serverGroupJSONObject : serverGroupsJSONArray.toArray(JSONObject.class)) {
                 ServerGroup serverGroup = serverGroupJSONObject.to(ServerGroup.class);
-                serverGroupHashMap.put(serverGroup.getGroupId(), serverGroup);
+                serverGroups.add(serverGroup);
             }
         }
     }
