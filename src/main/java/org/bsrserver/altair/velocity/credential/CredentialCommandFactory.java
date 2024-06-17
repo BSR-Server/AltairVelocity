@@ -78,6 +78,14 @@ public class CredentialCommandFactory {
         CredentialDataManager credentialDataManager = altairVelocity.getCredentialDataManager();
         return BrigadierCommand.literalArgumentBuilder("credential")
                 .requires(source -> source instanceof Player)
+                .executes(context -> {
+                    context.getSource().sendMessage(
+                            Component.text("----- Credential Command Help -----\n", NamedTextColor.GREEN)
+                                    .append(Component.text("/altair credential get - Get default altair credential", NamedTextColor.WHITE))
+                                    .append(Component.text("/altair credential avoidWelcomeMessage - Avoid welcome message", NamedTextColor.WHITE))
+                    );
+                    return Command.SINGLE_SUCCESS;
+                })
                 .then(
                         BrigadierCommand.literalArgumentBuilder("get")
                                 .executes(context -> {
