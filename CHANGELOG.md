@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.1.0](https://github.com/BSR-Server/AltairVelocity/compare/v1.0.0...v1.1.0) (2024-06-17)
+
+
+### Features
+
+* **credential:** ✨ add credential command help ([a763bcf](https://github.com/BSR-Server/AltairVelocity/commit/a763bcf602ae64d668e55a43cd435f7e64766bf1))
+* **credential:** 🐛 fix credential help command ([e580183](https://github.com/BSR-Server/AltairVelocity/commit/e580183c228eebf02b579440f30fbe31ddf6a229))
+* **data:** ✨ add data command ([680bcfb](https://github.com/BSR-Server/AltairVelocity/commit/680bcfb7dc240e9cefe3a0fc5a161cf656f6e7e1))
+* **data:** ✨ synchronized updateData ([6d0ca7d](https://github.com/BSR-Server/AltairVelocity/commit/6d0ca7da7d33d0cd0e740013cb9b7fe20ff7a9ff))
+* **data:** ✨ update data command ([94b3ad6](https://github.com/BSR-Server/AltairVelocity/commit/94b3ad680d743bbed39eb4b50825cc3461a4d105))
+* **hitokoto:** ✨ update hitokoto command help ([a569f72](https://github.com/BSR-Server/AltairVelocity/commit/a569f72a98e55acd0b32aea3b453e4e6bc8c3dd0))
+
+
+### Bug Fixes
+
+* 🐛 fix command help ([64d5eb7](https://github.com/BSR-Server/AltairVelocity/commit/64d5eb779dfb9b3ff99ed35480bc8f52dc99e1d9))
+* **command:** 🐛 fix help commands color ([35ce831](https://github.com/BSR-Server/AltairVelocity/commit/35ce831dd2222f3a1de0d299e8748937375b9381))
+* **command:** 🐛 fix help commands color ([9b49800](https://github.com/BSR-Server/AltairVelocity/commit/9b4980045c6bd601db428380a4191c63dce213d5))
+
 ## 1.0.0 (2024-06-17)
 
 
