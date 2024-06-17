@@ -13,7 +13,8 @@ public class CommandFactory {
     private static Component getHelpMessage() {
         return Component.text("----- Command Help -----")
                 .append(Component.text("\n"))
-                .append(Component.text("/altair credential - Default altair credential"));
+                .append(Component.text("/altair credential - Default altair credential"))
+                .append(Component.text("/altair hitokoto - Hitokoto commands"));
     }
 
     public static BrigadierCommand createRootCommand(AltairVelocity altairVelocity) {
