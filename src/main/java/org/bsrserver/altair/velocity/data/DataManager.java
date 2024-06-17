@@ -8,7 +8,7 @@ import okhttp3.Response;
 import org.bsrserver.altair.velocity.AltairVelocity;
 import org.slf4j.Logger;
 
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +18,7 @@ public class DataManager {
     private final AltairVelocity altairVelocity;
     private final Logger logger;
 
+    private final File cacheFile;
     private final HashMap<Integer, Account> accountHashMap = new HashMap<>();
     private final List<String> quotations = new ArrayList<>();
     private final HashMap<UUID, MinecraftProfile> minecraftProfileHashMap = new HashMap<>();
@@ -27,21 +28,74 @@ public class DataManager {
     public DataManager(AltairVelocity altairVelocity) {
         this.altairVelocity = altairVelocity;
         this.logger = altairVelocity.getLogger();
+        this.cacheFile = new File(altairVelocity.getDataDirectory().toAbsolutePath().toString(), "dataCache.dat");
+
+        // init data from cache
+        readFromFile();
+
+        // scheduled task
         altairVelocity.getScheduledExecutorService().scheduleAtFixedRate(this::scheduledTask, 0, 30, TimeUnit.SECONDS);
     }
 
+    private void saveToFile() {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(cacheFile))) {
+            objectOutputStream.writeObject(
+                    Cache
+                            .builder()
+                            .accountHashMap(accountHashMap)
+                            .quotations(quotations)
+                            .minecraftProfileHashMap(minecraftProfileHashMap)
+                            .serverInfoHashMap(serverInfoHashMap)
+                            .serverGroups(serverGroups)
+                            .build()
+            );
+        } catch (IOException e) {
+            logger.error("Failed to save cache to file.", e);
+        }
+    }
+
+    private void readFromFile() {
+        if (cacheFile.exists()) {
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(cacheFile))) {
+                // read cache
+                Cache cache = (Cache) objectInputStream.readObject();
+
+                // clear data
+                accountHashMap.clear();
+                quotations.clear();
+                minecraftProfileHashMap.clear();
+                serverInfoHashMap.clear();
+                serverGroups.clear();
+
+                // fill data
+                accountHashMap.putAll(cache.getAccountHashMap());
+                quotations.addAll(cache.getQuotations());
+                minecraftProfileHashMap.putAll(cache.getMinecraftProfileHashMap());
+                serverInfoHashMap.putAll(cache.getServerInfoHashMap());
+                serverGroups.addAll(cache.getServerGroups());
+            } catch (Exception e) {
+                logger.error("Failed to read cache from file.", e);
+            }
+        }
+    }
+
     private void scheduledTask() {
+        // update data
         try {
             updateAccounts();
             updateQuotations();
             updateMinecraftProfiles();
             updateServers();
             updateServerGroups();
-
-            fillServerGroups();
         } catch (Exception e) {
             altairVelocity.getLogger().error("Failed to get update some data", e);
         }
+
+        // save to file
+        saveToFile();
+
+        // fill objects to serverGroups
+        fillServerGroups();
     }
 
     private Request createGetRequest(String path) {
@@ -174,6 +228,8 @@ public class DataManager {
             serverGroups.clear();
             for (JSONObject serverGroupJSONObject : serverGroupsJSONArray.toArray(JSONObject.class)) {
                 ServerGroup serverGroup = serverGroupJSONObject.to(ServerGroup.class);
+                serverGroup.setParentObjects(new ArrayList<>());
+                serverGroup.setServerObjects(new ArrayList<>());
                 serverGroups.add(serverGroup);
             }
         }
@@ -182,7 +238,7 @@ public class DataManager {
     private void fillServerGroups() {
         for (ServerGroup serverGroup : serverGroups) {
             // parents
-            serverGroup.setParentObjects(new ArrayList<>(
+            serverGroup.getParentObjects().addAll(
                     serverGroups
                             .stream()
                             .filter(parent -> serverGroup
@@ -190,10 +246,10 @@ public class DataManager {
                                     .contains(parent.getGroupId())
                             )
                             .toList()
-            ));
+            );
 
             // servers
-            serverGroup.setServerObjects(new ArrayList<>(
+            serverGroup.getServerObjects().addAll(
                     serverInfoHashMap
                             .values()
                             .stream()
@@ -202,7 +258,7 @@ public class DataManager {
                                     .contains(serverInfo.getServerId())
                             )
                             .toList()
-            ));
+            );
         }
     }
 

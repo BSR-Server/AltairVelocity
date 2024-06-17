@@ -2,11 +2,12 @@ package org.bsrserver.altair.velocity.data;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ServerGroup {
+public class ServerGroup implements Serializable {
     private Integer groupId;
     private String name;
     private List<Integer> parents;
