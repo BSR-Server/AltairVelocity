@@ -23,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 @Plugin(
         id = "altair-velocity",
         name = "Altair Velocity Plugin",
-        version = "1.1.0", // x-release-please-version
+        version = "1.2.0", // x-release-please-version
         url = "https://bsrserver.org:8443/",
         description = "Altair Velocity Plugin",
         authors = {
