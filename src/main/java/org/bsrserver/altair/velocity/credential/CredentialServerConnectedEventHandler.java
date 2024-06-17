@@ -5,12 +5,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bsrserver.altair.velocity.AltairVelocity;
-import org.bsrserver.altair.velocity.event.IServerConnectedHandler;
+import org.bsrserver.altair.velocity.event.IServerConnectedEventHandler;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class CredentialServerConnectedHandler implements IServerConnectedHandler {
+public class CredentialServerConnectedEventHandler implements IServerConnectedEventHandler {
     @Override
     public void onServerConnectedEvent(AltairVelocity altairVelocity, ServerConnectedEvent event) {
         if (event.getPreviousServer().isEmpty()) {

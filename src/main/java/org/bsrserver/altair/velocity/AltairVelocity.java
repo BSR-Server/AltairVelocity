@@ -7,11 +7,12 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
+import org.bsrserver.altair.velocity.accounts.AccountOnlinePlayersManager;
 import org.bsrserver.altair.velocity.command.CommandFactory;
 import org.bsrserver.altair.velocity.config.Config;
 import org.bsrserver.altair.velocity.credential.CredentialDataManager;
 import org.bsrserver.altair.velocity.data.DataManager;
-import org.bsrserver.altair.velocity.event.ServerConnectedEventListener;
+import org.bsrserver.altair.velocity.event.EventListener;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ public class AltairVelocity {
     private final Logger logger;
     private final Path dataDirectory;
     private final Config config;
+    private final AccountOnlinePlayersManager accountOnlinePlayersManager;
     private final DataManager dataManager;
     private final CredentialDataManager credentialDataManager;
 
@@ -54,6 +56,7 @@ public class AltairVelocity {
 
         // init members
         this.config = new Config(dataDirectory);
+        this.accountOnlinePlayersManager = new AccountOnlinePlayersManager(this);
         this.dataManager = new DataManager(this);
         this.credentialDataManager = new CredentialDataManager(this);
     }
@@ -61,7 +64,7 @@ public class AltairVelocity {
     @Subscribe
     public void onInitialize(ProxyInitializeEvent event) {
         // register event
-        proxyServer.getEventManager().register(this, new ServerConnectedEventListener(this));
+        proxyServer.getEventManager().register(this, new EventListener(this));
 
         // register command
         proxyServer.getCommandManager().register(

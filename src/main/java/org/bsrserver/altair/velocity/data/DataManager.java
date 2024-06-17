@@ -217,28 +217,28 @@ public class DataManager {
         }
     }
 
-    public boolean canJoinServer(UUID uuid, String serverName) {
-        // get minecraftProfile
+    public Optional<Account> getAccount(UUID uuid) {
+        // get minecraft profile
         MinecraftProfile minecraftProfile = minecraftProfileHashMap.get(uuid);
-        if (minecraftProfile == null) {
-            return false;
+        if (minecraftProfile == null || minecraftProfile.getScheduledDeletionAt() != null) {
+            return Optional.empty();
         }
 
         // get account
-        Account account = accountHashMap.get(minecraftProfile.getAccountId());
-        if (account == null) {
-            return false;
-        }
+        return Optional.ofNullable(accountHashMap.get(minecraftProfile.getAccountId()));
+    }
 
-        // check account status
-        if (account.getIsBanned() || !account.getIsActive()) {
+    public boolean isWhitelisted(UUID uuid, String serverName) {
+        // get account
+        Integer accountId = getAccount(uuid).map(Account::getAccountId).orElse(null);
+        if (accountId == null) {
             return false;
         }
 
         // check server group
         for (ServerGroup serverGroup : serverGroups) {
             if (
-                    serverGroup.getAccounts().contains(account.getAccountId())
+                    serverGroup.getAccounts().contains(accountId)
                             && serverGroup.getAllServers().stream().anyMatch(serverInfo -> serverInfo.getServerName().equals(serverName))
             ) {
                 return true;

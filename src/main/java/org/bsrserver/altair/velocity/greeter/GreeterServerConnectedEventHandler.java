@@ -8,14 +8,14 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bsrserver.altair.velocity.AltairVelocity;
 import org.bsrserver.altair.velocity.data.ServerInfo;
-import org.bsrserver.altair.velocity.event.IServerConnectedHandler;
+import org.bsrserver.altair.velocity.event.IServerConnectedEventHandler;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreeterServerConnectedHandler implements IServerConnectedHandler {
+public class GreeterServerConnectedEventHandler implements IServerConnectedEventHandler {
     private String getOpenDays(ServerInfo serverInfo) {
         int daysBetween = (int) ChronoUnit.DAYS.between(serverInfo.getFoundationDate(), LocalDate.now());
         return "这是 " + serverInfo.getGivenName() + " 开服的第 " + daysBetween + " 天\n\n";
