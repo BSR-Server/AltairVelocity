@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bsrserver.altair.velocity.AltairVelocity;
 import org.bsrserver.altair.velocity.credential.CredentialCommandFactory;
 import org.bsrserver.altair.velocity.data.DataCommandFactory;
@@ -12,11 +13,12 @@ import org.bsrserver.altair.velocity.hitokoto.HitokotoCommandFactory;
 
 public class CommandFactory {
     private static Component getHelpMessage() {
-        return Component.text("----- Command Help -----")
+        return Component.text("----- Command Help -----", NamedTextColor.GREEN)
                 .append(Component.text("\n"))
-                .append(Component.text("/altair data - Data commands"))
-                .append(Component.text("/altair credential - Default altair credential"))
-                .append(Component.text("/altair hitokoto - Hitokoto commands"));
+                .append(Component.text("/altair data - Data commands\n"))
+                .append(Component.text("/altair credential - Default altair credential\n"))
+                .append(Component.text("/altair hitokoto - Hitokoto commands\n"))
+                .append(Component.text("/altair - Show help message"));
     }
 
     public static BrigadierCommand createRootCommand(AltairVelocity altairVelocity) {
